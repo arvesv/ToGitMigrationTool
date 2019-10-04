@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 
 namespace ToGit
@@ -13,8 +12,8 @@ namespace ToGit
             RealiveLocalPath = relLocalPath;
         }
 
-        string TfsPath;
-        string RealiveLocalPath;
+        public string TfsPath;
+        public string RealiveLocalPath;
     }
 
 
@@ -22,19 +21,30 @@ namespace ToGit
     {
         public string WorkingFolder;
         public string TfsUrl;
-        IEnumerable<TfsMapping> Map;
+        public IList<TfsMapping> Map;
 
 
         public static Config ReadFile(string filename)
         {
-            using var reader =  new StreamReader(filename);
+            using var reader = new StreamReader(filename);
 
             var deserializer = new DeserializerBuilder().Build();
             var res = deserializer.Deserialize<dynamic>(reader);
 
+
+            var mapping = res["tfs"]["mapping"];
+            var newMap = new List<TfsMapping>(mapping.Count);
+
+            foreach (var map in mapping)
+            {
+                newMap.Add(new TfsMapping(map.Value, map.Key));
+            }
+
+
             return new Config(res["workdirectory"])
             {
-                TfsUrl = res["tfs"]["url"]
+                TfsUrl = res["tfs"]["url"],
+                Map = newMap
             };
         }
 

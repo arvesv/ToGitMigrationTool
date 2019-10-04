@@ -1,0 +1,6 @@
+﻿workdirectory:  b:\my_dir\hei
+
+tfs:
+   url: https://my_serv/tfs
+   mapping:
+      dir1: $/Project1/Main
