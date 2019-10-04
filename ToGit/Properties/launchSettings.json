@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ToGit": {
+      "commandName": "Project",
+      "commandLineArgs": "--setupfile e:\\config\\u4bw.yml"
+    }
+  }
+}
