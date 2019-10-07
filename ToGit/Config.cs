@@ -23,14 +23,11 @@ namespace ToGit
         public string TfsUrl;
         public IList<TfsMapping> Map;
 
-
         public static Config ReadFile(string filename)
         {
             using var reader = new StreamReader(filename);
-
             var deserializer = new DeserializerBuilder().Build();
             var res = deserializer.Deserialize<dynamic>(reader);
-
 
             var mapping = res["tfs"]["mapping"];
             var newMap = new List<TfsMapping>(mapping.Count);
@@ -40,19 +37,14 @@ namespace ToGit
                 newMap.Add(new TfsMapping(map.Value, map.Key));
             }
 
-
-            return new Config(res["workdirectory"])
-            {
-                TfsUrl = res["tfs"]["url"],
-                Map = newMap
-            };
+            return new Config(res["workdirectory"], res["tfs"]["url"], newMap);
         }
 
-        private Config(string workingFoder)
+        private Config(string workingFoder, string tfsUrl, IList<TfsMapping> map)
         {
             WorkingFolder = workingFoder;
-            TfsUrl = "";
-            Map = new List<TfsMapping>();
+            TfsUrl = tfsUrl;
+            Map = map;
         }
     }
 }

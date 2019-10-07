@@ -10,6 +10,7 @@ namespace TestToGit
         [Fact]
         public void TestReadConfigYaml()
         {
+            // Testing that we can read the file above
             var cfg = Config.ReadFile(testYmlFile);
 
             Assert.Equal(@"b:\my_dir\hei", cfg.WorkingFolder);
