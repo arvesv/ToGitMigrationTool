@@ -14,6 +14,8 @@ namespace ToGit
             {
                 SetupFile = "";   // Just to please the C# 8 nullable checks
             }
+
+
         }
 
 
@@ -23,7 +25,16 @@ namespace ToGit
 
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed<Options>(o =>
-                    cfg = Config.ReadFile(o.SetupFile)
+                {
+                    cfg = Config.ReadFile(o.SetupFile);
+                    var tfs = new Tfs(cfg.TfsUrl, cfg.PersonalAccessToken, cfg.Map, cfg.WorkingFolder);
+
+                    var q = tfs.GetChangesets(800000);
+
+
+
+
+                }
                 );
         }
     }

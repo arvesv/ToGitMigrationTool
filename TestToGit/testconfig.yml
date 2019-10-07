@@ -2,5 +2,6 @@
 
 tfs:
    url: https://my_serv/tfs
+   pac:  bigsecret
    mapping:
       dir1: $/Project1/Main

@@ -21,6 +21,7 @@ namespace ToGit
     {
         public string WorkingFolder;
         public string TfsUrl;
+        public string PersonalAccessToken;
         public IList<TfsMapping> Map;
 
         public static Config ReadFile(string filename)
@@ -37,14 +38,15 @@ namespace ToGit
                 newMap.Add(new TfsMapping(map.Value, map.Key));
             }
 
-            return new Config(res["workdirectory"], res["tfs"]["url"], newMap);
+            return new Config(res["workdirectory"], res["tfs"]["url"], newMap, res["tfs"]["pac"]);
         }
 
-        private Config(string workingFoder, string tfsUrl, IList<TfsMapping> map)
+        private Config(string workingFoder, string tfsUrl, IList<TfsMapping> map, string accesstoken)
         {
             WorkingFolder = workingFoder;
             TfsUrl = tfsUrl;
             Map = map;
+            PersonalAccessToken = accesstoken;
         }
     }
 }

@@ -19,6 +19,7 @@ namespace TestToGit
             Assert.Equal(1, cfg.Map.Count);
             Assert.Equal("dir1", cfg.Map[0].RealiveLocalPath);
             Assert.Equal("$/Project1/Main", cfg.Map[0].TfsPath);
+            Assert.Equal("bigsecret", cfg.PersonalAccessToken);
         }
     }
 }
