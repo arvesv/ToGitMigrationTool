@@ -29,7 +29,8 @@ namespace ToGit
                     cfg = Config.ReadFile(o.SetupFile);
                     var tfs = new Tfs(cfg.TfsUrl, cfg.PersonalAccessToken, cfg.Map, cfg.WorkingFolder);
 
-                    var q = tfs.GetChangesets(800000);
+                    var q = tfs.GetChangesetsForPath("$/Platform/Main", 800000);
+
 
 
 
