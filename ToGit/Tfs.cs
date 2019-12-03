@@ -12,7 +12,8 @@ namespace ToGit
         public string Comment;
         public string Email;
         public string Name;
-        public int WorkItem;
+        public int? WorkItem;
+        public int Id;
     }
 
 
@@ -66,15 +67,22 @@ namespace ToGit
 
         internal ChangeSet GetChangeset(int changesetid)
         {
-            var c = new ChangeSet();
-
-            
             var changeset = tfvc.Value.GetChangesetAsync(changesetid, includeWorkItems: true, includeDetails: true).Result;
 
-            c.Comment = changeset.Comment;
-            c.Name = changeset.Author.DisplayName;
-            c.WorkItem = changeset.WorkItems.First().Id;
-            throw new NotImplementedException();
+            int? wi = null;
+
+            if(changeset.WorkItems.Count() > 0)
+            {
+                wi = changeset.WorkItems.First().Id;
+            }
+            return new ChangeSet
+            {
+                Comment = changeset.Comment,
+                Name = changeset.Author.DisplayName,
+                WorkItem = wi,
+                Email = "<>",
+                Id = changesetid
+            };
         }
 
         public IEnumerable<int> GetChangesets(int startChanegsetId)
