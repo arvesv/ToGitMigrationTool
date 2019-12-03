@@ -4,10 +4,18 @@ using Microsoft.VisualStudio.Services.WebApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ToGit
 {
+    public class ChangeSet
+    {
+        public string Comment;
+        public string Email;
+        public string Name;
+        public int WorkItem;
+    }
+
+
     public class Tfs
     {
         string Url;
@@ -24,7 +32,8 @@ namespace ToGit
             Map = map;
             localbasepath = basepath;
 
-            tfvc = new Lazy<TfvcHttpClient>(() => {
+            tfvc = new Lazy<TfvcHttpClient>(() =>
+            {
                 VssBasicCredential credentials = new VssBasicCredential("", _personalAccessToken);
                 var conn = new VssConnection(new Uri(Url), credentials);
                 return conn.GetClient<TfvcHttpClient>();
@@ -55,8 +64,21 @@ namespace ToGit
             return ret;
         }
 
+        internal ChangeSet GetChangeset(int changesetid)
+        {
+            var c = new ChangeSet();
+
+            
+            var changeset = tfvc.Value.GetChangesetAsync(changesetid, includeWorkItems: true, includeDetails: true).Result;
+
+            c.Comment = changeset.Comment;
+            c.Name = changeset.Author.DisplayName;
+            c.WorkItem = changeset.WorkItems.First().Id;
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<int> GetChangesets(int startChanegsetId)
-        {          
+        {
             TfvcChangesetSearchCriteria crit = new TfvcChangesetSearchCriteria
             {
                 ItemPath = "$/Platform/Main"

@@ -1,4 +1,6 @@
 ﻿using CommandLine;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ToGit
 {
@@ -29,7 +31,30 @@ namespace ToGit
                     cfg = Config.ReadFile(o.SetupFile);
                     var tfs = new Tfs(cfg.TfsUrl, cfg.PersonalAccessToken, cfg.Map, cfg.WorkingFolder);
 
-                    var q = tfs.GetChangesetsForPath("$/Platform/Main", 800000);
+                    int fromChangeSet = int.Parse(File.ReadAllText(cfg.StateFile))+1;
+
+
+                    List<int> changsets = new List<int>();
+
+                    foreach(var map in cfg.Map)
+                    {
+                        var q = tfs.GetChangesetsForPath(map.TfsPath, fromChangeSet);
+                        changsets.AddRange(q);
+                    }
+
+                    changsets.Sort();
+
+                    foreach(int changesetid in changsets)
+                    {
+                        var changeset = tfs.GetChangeset(changesetid);
+
+
+                    
+                    
+                    }
+
+
+
 
 
 
